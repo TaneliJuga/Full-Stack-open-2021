@@ -1,0 +1,32 @@
+title Tehtävä 05
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+palvelin-->selain: HTML-koodi
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+palvelin-->selain: main.css
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+palvelin-->selain: spa.js
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka pyytää JSON-datan palvelimelta
+end note
+
+selain->palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+palvelin-->selain: [{ content: "HTML on helppoa", date: "2021-15-09" }, ...]
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note
+
+note over selain:
+1. käyttäjä kirjoittaa viestin ja painaa submit-nappia.
+2. kaavakkeen tapahtumakäsittelijä suoritetaan.
+3. koodi luo javascript-elementin, joka sisältää viestin ja päiväyksen.
+4. viesti lisätään koodin muuttujaan, joka sisältää viestit. 
+5. koodi renderöi muistiinpanot näytölle.
+end note
+
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+palvelin-->selain: {"message":"note created"}
