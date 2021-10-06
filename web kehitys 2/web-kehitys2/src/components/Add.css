@@ -1,0 +1,12 @@
+.form-column{
+    display: flex;
+    flex-flow: column;
+}
+
+.form-row{
+    display: flex;
+}
+
+.user-form{
+    display: inline-block;
+}
