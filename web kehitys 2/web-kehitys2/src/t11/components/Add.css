@@ -1,0 +1,24 @@
+.form-column{
+    display: flex;
+    flex-flow: column;
+}
+
+.form-column input, label {
+    margin-top: 3px;
+}
+
+.form-row{
+    display: flex;
+}
+
+.user-form{
+    display: inline-block;
+}
+
+.user-form input:invalid:not([type=submit]) {
+    border: 2px rgb(236 97 31 / 60%) solid;
+}
+
+.user-form input:valid:not([type=submit]) {
+    border: 2px rgb(138 245 66 / 50%) solid;
+}
