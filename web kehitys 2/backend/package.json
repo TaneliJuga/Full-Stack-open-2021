@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "t13": "node ./t13/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Taneli Juga",
