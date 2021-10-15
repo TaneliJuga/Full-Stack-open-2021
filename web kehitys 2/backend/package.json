@@ -7,6 +7,7 @@
     "start": "node index.js",
     "t13": "node ./t13/index.js",
     "t15": "node ./t15/index.js",
+    "t16": "node ./t16/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Taneli Juga",

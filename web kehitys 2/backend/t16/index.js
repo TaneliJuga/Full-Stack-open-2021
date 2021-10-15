@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
+
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // for reading JSON
@@ -38,20 +39,56 @@ conn.connect(function(err) {
     console.log("Connected to MySQL!");
 });
 
-app.post("/api/user", urlencodedParser, function (req, res) {
+app.post("/api/user", 
+urlencodedParser, 
+function(req, res, next){
     const authHeader = req.get('Authorization');
-    const token = authHeader && authHeader.split(' ')[1]
+    const token = authHeader && authHeader.split(' ')[1];
+    let error = false;
+    let errorMessage = '';
+
+    if(!token){
+        error = true;
+        errorMessage = 'no authentication token supplied.';
+    }else{
+        req.authToken = token;
+    }
+
+    try {
+        const authHeader = req.get('Authorization');
+        const token = authHeader && authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, secrets.jwtSecret);
+        console.log("decoded: ", decoded);
+    } catch(err) {
+        error = true;
+        errorMessage = 'token does not match';
+    }
+
+    if(error){
+        console.log("error: ", errorMessage);
+        res.status(401);
+        res.statusMessage = errorMessage;
+    }
+
+    next();
+}, function (req, res) {
+
+    const token = req.authToken;
+    //console.log("req", req);
     //console.log("authHeader: ", authHeader);
-    console.log("token: "+token);
+    //console.log("token: "+token);
 
     //console.log("body: %j", req.body);
     var jsonObj = req.body;
     
     // make updates to the database
     const {email, password} = jsonObj;
+
+    //console.log("email: ", email);
+    //console.log("password: ", password);
     //console.log("secrets.jwtSecret ", secrets.jwtSecret);
     if (email && password) { // is  a location place already present?
-        const accessToken = jwt.sign({name: email}, secrets.jwtSecret,
+        const accessToken = jwt.sign({loggedInAs: email}, secrets.jwtSecret,
         {expiresIn: "1h"});
 
         res.status(200).json({accessToken: accessToken});
